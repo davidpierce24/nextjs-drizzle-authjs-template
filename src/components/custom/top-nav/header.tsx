@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SignOut from "../top-nav/sign-out";
 import { auth } from "@/server/auth/auth";
-import { Icon3dCubeSphereOff } from "@tabler/icons-react";
+import { IconActivity } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
 
 async function Header() {
   const session = await auth();
@@ -26,22 +27,17 @@ async function Header() {
           </Link>
         </div>
         <div className="absolute left-1/2 -translate-x-1/2 transform text-start text-3xl">
-          <Icon3dCubeSphereOff />
+          <IconActivity />
         </div>
         <div className="flex gap-2">
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              {session?.user ? (
+          {session?.user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={session.user?.image?.toString()} alt="" />
                   <AvatarFallback>{session.user.name}</AvatarFallback>
                 </Avatar>
-              ) : (
-                <div className="h-8 w-8 rounded-full bg-secondary"></div>
-              )}
-            </DropdownMenuTrigger>
-            {session?.user ? (
+              </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -53,19 +49,12 @@ async function Header() {
                   <SignOut />
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            ) : (
-              <DropdownMenuContent>
-                <DropdownMenuLabel></DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <ModeToggle />
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/login">Login</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            )}
-          </DropdownMenu>
+            </DropdownMenu>
+          ) : (
+            <Button asChild>
+              <Link href="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>
